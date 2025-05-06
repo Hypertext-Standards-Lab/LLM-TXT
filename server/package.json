@@ -2,9 +2,11 @@
   "name": "server",
   "version": "0.0.1",
   "scripts": {
-    "dev": "bun run --hot src/index.ts"
+    "dev": "bun run --hot src/index.ts",
+    "deploy": "wrangler deploy --minify"
   },
   "dependencies": {
+    "@cloudflare/workers-types": "^4.20250505.0",
     "hono": "^4.7.7",
     "shared": "workspace:*"
   },

@@ -9,7 +9,7 @@
     "jsxImportSource": "hono/jsx",
 
     // Types
-    "types": ["bun-types"],
+    "types": ["bun-types", "@cloudflare/workers-types"],
 
     // Output settings
     "outDir": "dist",

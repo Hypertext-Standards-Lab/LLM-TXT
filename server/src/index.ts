@@ -1,23 +1,50 @@
-import { Hono } from 'hono'
-import { cors } from 'hono/cors'
-import type { ApiResponse } from 'shared/dist'
+import { Hono } from "hono";
+import { cors } from "hono/cors";
+import mcp from "./routes/mcp";
 
-const app = new Hono()
+const app = new Hono();
 
-app.use(cors())
+// Configure CORS with specific options for Cloudflare Workers
+app.use(
+  "/*",
+  cors({
+    origin: [
+      "https://llm-fid-txt.hey-ea8.workers.dev",
+      "https://llm-fid.fun",
+      "http://localhost:3000",
+      "http://localhost:5173", // Vite dev server
+    ],
+    allowMethods: ["GET", "POST", "OPTIONS"],
+    allowHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept", "Origin", "X-CSRF-Token"],
+    exposeHeaders: ["Content-Length", "X-Kuma-Revision"],
+    maxAge: 86400,
+    credentials: true,
+  })
+);
 
-app.get('/', (c) => {
-  return c.text('Hello Hono!')
-})
+// Add security headers for Cloudflare Workers
+app.use("*", async (c, next) => {
+  // Add security headers
+  c.header("X-Content-Type-Options", "nosniff");
+  c.header("X-Frame-Options", "DENY");
+  c.header("X-XSS-Protection", "1; mode=block");
+  c.header("Referrer-Policy", "strict-origin-when-cross-origin");
+  c.header("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
 
-app.get('/hello', async (c) => {
+  // Add Cloudflare-specific headers
+  c.header("CF-IPCountry", c.req.header("CF-IPCountry") || "");
+  c.header("CF-Connecting-IP", c.req.header("CF-Connecting-IP") || "");
 
-  const data: ApiResponse = {
-    message: "Hello BHVR!",
-    success: true
-  }
+  await next();
+});
 
-  return c.json(data, { status: 200 })
-})
+// Mount the MCP route
+app.route("/", mcp);
 
-export default app
+// Health check endpoint
+app.get("/health", (c) => {
+  return c.json({ status: "ok" }, 200);
+});
+
+export type AppType = typeof app;
+export default app;

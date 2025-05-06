@@ -7,12 +7,14 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "orbiter update --domain llm-fid ./dist"
   },
   "dependencies": {
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "shared": "workspace:*"
+    "shared": "workspace:*",
+    "hono": "^4.7.7"
   },
   "devDependencies": {
     "@eslint/js": "^9.22.0",

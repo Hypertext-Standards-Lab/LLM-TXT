@@ -1,0 +1,16 @@
+{
+  "name": "llm-fid-txt-server",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-02-13",
+  "compatibility_flags": ["nodejs_compat"],
+  "vars": {
+    "SNAPCHAIN_BASE_URL": "https://hub.pinata.cloud",
+    "CORS_ORIGIN": "https://llm-fid.fun"
+  },
+  "routes": [
+    {
+      "pattern": "api.llm-fid.fun",
+      "custom_domain": true
+    }
+  ]
+}

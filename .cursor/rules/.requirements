@@ -1,0 +1,93 @@
+### Endpoint & Parameters
+
+| Query Param      | Type             | Required?                              | Details                                                                                                                  |
+| ---------------- | ---------------- | -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `fid`            | string \| number | Either `fid` or `username` is required | Farcaster ID. If both `fid` and `username` are provided, `fid` takes precedence.                                         |
+| `username`       | string           | See above                              | ENS-style Farcaster handle (e.g. `v`, `alice`). No leading `@`. Resolved via Snapchain’s `userNameProofByName` endpoint. |
+| `limit`          | integer          | optional                               | Maximum number of top-level posts. Ignored if `all=true`.                                                                |
+| `includeReplies` | boolean          | optional                               | Include nested replies under each post.                                                                                  |
+| `all`            | boolean          | optional                               | If `true`, ignore `limit` and fetch full post history.                                                                   |
+| `order`          | string           | `asc` or `desc`                        | Define the order of the response                                                                                         |
+
+**FID Resolution Logic:**
+
+- If `fid` is present, it is used directly.
+- If only `username` is present:
+  - Make a GET request to:  
+    `/v1/userNameProofByName?name=<username>` on Snapchain (port 3381).
+  - If valid, extract the `fid` from the response.
+  - If not found, return 404 Not Found.
+- If both `fid` and `username` are present but conflict, return 409 Conflict.
+- Resolution is ephemeral — no caching is allowed.
+
+**Error Handling:**
+
+- `400 Bad Request` if neither `fid` nor `username` is provided.
+- `404 Not Found` if `username` cannot be resolved.
+- `409 Conflict` if both values are supplied and do not match.
+
+---
+
+### Data Retrieval
+
+- Fetch the profile using:  
+  `/v1/userDataByFid?fid=<fid>`
+- Fetch the post history using:  
+  `/v1/castsByFid?fid=<fid>`
+- Snapchain nodes must expose these Farcaster-compatible APIs on port 3381.
+
+---
+
+### Output Format
+
+- Return a plaintext `.txt` file in the format: `llm-<fid>.txt`
+- File contents must include:
+  - Profile metadata (username, display name, bio, etc.)
+  - Chronological list of posts, optionally with replies and attachments
+  - Clean formatting for LLM ingestion
+- Response headers must include:
+  - `Content-Type: text/plain`
+  - `Content-Disposition: attachment; filename="llm-<fid>.txt"`
+
+---
+
+### Ephemeral & Stateless
+
+- No caching, storage, or session state is allowed.
+- Each request must query Snapchain in real time.
+- No Redis, KV, or DB integration.
+
+---
+
+### Performance
+
+- Use non-blocking async fetches.
+- Parallelize profile + post retrieval if possible.
+- Keep response under Cloudflare Worker limits (~50ms cold start target).
+
+---
+
+### Deployment Targets
+
+- **Backend:** Cloudflare Workers using `Hono` (via `bhvr` framework)
+- **Frontend:** Static React UI hosted via Orbiter
+- Must support full deployment via `bun run dev:server` and wrangler
+- Environment variables supported for endpoint config (`SNAPCHAIN_BASE_URL`)
+
+---
+
+### Technology Constraints
+
+- TypeScript only
+- No backend database or key-value store
+- Use native Hono + Fetch APIs only
+- Snapchain assumed to run locally or via R2 tunnel with public access
+
+---
+
+### Model Context Protocol Compliance
+
+- Service must return real-time, structured context suitable for LLM ingestion
+- Output must be raw text — no HTML, JSON, or markdown
+- Filename must reflect the FID, and file should be downloadable via browser
+- No authentication or personalization is required

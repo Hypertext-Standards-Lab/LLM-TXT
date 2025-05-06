@@ -1,63 +1,186 @@
-import { useState } from 'react'
-import beaver from './assets/beaver.svg'
-import { ApiResponse } from 'shared'
-import './App.css'
+import { useState, useEffect, useCallback } from "react";
+import type { MCPQueryParams } from "shared";
+import "./App.css";
 
-const SERVER_URL = import.meta.env.VITE_SERVER_URL || "http://localhost:3000"
+// Server URL configuration
+const SERVER_URL = import.meta.env.PROD ? "https://api.llm-fid.fun" : "http://localhost:3000";
 
-function App() {
-  const [data, setData] = useState<ApiResponse | undefined>()
+// Custom debounce hook
+function useDebounce<T>(value: T, delay: number): T {
+  const [debouncedValue, setDebouncedValue] = useState<T>(value);
 
-  async function sendRequest() {
-    try {
-      const req = await fetch(`${SERVER_URL}/hello`)
-      const res: ApiResponse = await req.json()
-      setData(res)
-    } catch (error) {
-      console.log(error)
-    }
-  }
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
 
-  return (
-    <>
-      <div>
-        <a href="https://github.com/stevedylandev/bhvr" target="_blank">
-          <img src={beaver} className="logo" alt="beaver logo" />
-        </a>
-      </div>
-      <h1>bhvr</h1>
-      <h2>Bun + Hono + Vite + React</h2>
-      <p>A typesafe fullstack monorepo</p>
-      <div className="card">
-        <button onClick={sendRequest}>
-          Call API
-        </button>
-        {data && (
-          <pre className='response'>
-            <code>
-            Message: {data.message} <br />
-            Success: {data.success.toString()}
-            </code>
-          </pre>
-        )}
-        <pre className='code'>
-          <code>
-{`
-  .
-  ├── client/               # React frontend
-  ├── server/               # Hono backend
-  ├── shared/               # Shared TypeScript definitions
-  │   └── src/types/        # Type definitions used by both client and server
-  └── package.json          # Root package.json with workspaces
-`}
-          </code>
-        </pre>
-      </div>
-      <p className="read-the-docs">
-        Click the beaver to learn more
-      </p>
-    </>
-  )
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [value, delay]);
+
+  return debouncedValue;
 }
 
-export default App
+function App() {
+  const [input, setInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [generatedUrl, setGeneratedUrl] = useState<string | null>(null);
+  const [params, setParams] = useState<MCPQueryParams>({
+    limit: 10,
+    includeReplies: false,
+    all: false,
+    sortOrder: "newest",
+  });
+
+  // Debounce the input value
+  const debouncedInput = useDebounce(input, 500);
+
+  // Generate URL whenever debounced input or params change
+  useEffect(() => {
+    if (!debouncedInput.trim()) {
+      setGeneratedUrl(null);
+      return;
+    }
+
+    try {
+      const isFid = !isNaN(Number(debouncedInput));
+      const queryParams = new URLSearchParams();
+
+      // Add the main identifier
+      if (isFid) {
+        queryParams.set("fid", debouncedInput);
+      } else {
+        queryParams.set("username", debouncedInput);
+      }
+
+      // Add optional parameters
+      if (params.limit) queryParams.set("limit", params.limit.toString());
+      queryParams.set("includeReplies", params.includeReplies ? "true" : "false");
+      if (params.all) queryParams.set("all", "true");
+      if (params.sortOrder) queryParams.set("sortOrder", params.sortOrder);
+
+      setGeneratedUrl(`${SERVER_URL}/mcp?${queryParams.toString()}`);
+    } catch (err) {
+      setGeneratedUrl(null);
+    }
+  }, [debouncedInput, params]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!generatedUrl) return;
+
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      // Open in new tab with the full server URL
+      window.open(generatedUrl, "_blank");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "An error occurred");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <div className='container'>
+      <h1>LLM-[FID].txt</h1>
+      <p>Generate a llm.txt file for a Farcaster profile</p>
+
+      <form onSubmit={handleSubmit} className='form'>
+        <div className='form-section'>
+          <h2>Input</h2>
+          <div className='input-group'>
+            <input
+              type='text'
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder='Enter FID or username'
+              disabled={isLoading}
+              required
+            />
+            <button type='submit' disabled={isLoading || !generatedUrl}>
+              {isLoading ? "Generating..." : "Generate"}
+            </button>
+          </div>
+          {generatedUrl && (
+            <div className='url-display'>
+              <span className='url-text'>{generatedUrl}</span>
+            </div>
+          )}
+        </div>
+
+        <div className='form-section'>
+          <h2>Options</h2>
+          <div className='controls'>
+            <div className='control-group'>
+              <label>
+                <span>Post Limit</span>
+                <input
+                  type='number'
+                  value={params.limit || ""}
+                  onChange={(e) => setParams({ ...params, limit: e.target.value ? Number(e.target.value) : 10 })}
+                  min='1'
+                  disabled={params.all}
+                />
+                <small>Default: 10 posts</small>
+              </label>
+            </div>
+
+            <div className='control-group'>
+              <label>
+                <span>Sort Order</span>
+                <select
+                  value={params.sortOrder}
+                  onChange={(e) => setParams({ ...params, sortOrder: e.target.value as "newest" | "oldest" })}
+                >
+                  <option value='newest'>Newest First</option>
+                  <option value='oldest'>Oldest First</option>
+                </select>
+                <small>Default: Newest First</small>
+              </label>
+            </div>
+
+            <div className='control-group checkboxes'>
+              <label>
+                <input
+                  type='checkbox'
+                  checked={params.all}
+                  onChange={(e) => setParams({ ...params, all: e.target.checked })}
+                />
+                <div>
+                  <span>Fetch All Posts</span>
+                  <small>Ignores post limit</small>
+                </div>
+              </label>
+
+              <label>
+                <input
+                  type='checkbox'
+                  checked={params.includeReplies}
+                  onChange={(e) => setParams({ ...params, includeReplies: e.target.checked })}
+                />
+                <div>
+                  <span>Include Replies</span>
+                  <small>Show reply threads</small>
+                </div>
+              </label>
+            </div>
+          </div>
+        </div>
+      </form>
+
+      {error && <div className='error'>{error}</div>}
+
+      <p>
+        <small>
+          Built by <a href='https://warpcast.com/iammatthias'>@iammatthias</a>
+        </small>
+      </p>
+    </div>
+  );
+}
+
+export default App;

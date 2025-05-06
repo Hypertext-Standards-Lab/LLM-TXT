@@ -1,8 +1,6 @@
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .logo {
@@ -51,4 +49,239 @@
   text-align: start;
   max-width: 500px;
   margin: auto;
+}
+
+.container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+/* Typography */
+h1 {
+  font-size: 1.75rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: #000;
+  text-align: left;
+}
+
+h2 {
+  font-size: 1rem;
+  font-weight: 500;
+  margin: 2rem 0 1rem;
+  color: #000;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+h3 {
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin: 1.5rem 0 0.75rem;
+  color: #000;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+p {
+  color: #000;
+  margin-bottom: 1.5rem;
+  text-align: left;
+  line-height: 1.5;
+  font-size: 0.875rem;
+}
+
+/* Form Elements */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.form-section {
+  border: 1px solid #000;
+  padding: 1.5rem;
+}
+
+.input-group {
+  display: flex;
+  gap: 1rem;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="datetime-local"],
+select {
+  flex: 1;
+  padding: 0.75rem;
+  font-size: 0.875rem;
+  border: 1px solid #000;
+  background: #fff;
+  font-family: inherit;
+  min-width: 0;
+}
+
+select {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 1rem;
+  padding-right: 2.5rem;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  background: #f5f5f5;
+}
+
+button {
+  padding: 0.75rem 1.5rem;
+  font-size: 0.875rem;
+  background: #000;
+  color: #fff;
+  border: 1px solid #000;
+  cursor: pointer;
+  font-family: inherit;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+button:hover {
+  background: #fff;
+  color: #000;
+}
+
+button:disabled {
+  background: #ccc;
+  border-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
+}
+
+/* Controls */
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 400px;
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.control-group.checkboxes {
+  flex-direction: row;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.control-group.checkboxes label {
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.control-group.checkboxes label div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.control-group.checkboxes input[type="checkbox"] {
+  margin-top: 0.25rem;
+}
+
+.control-group label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  cursor: pointer;
+}
+
+.control-group label span {
+  font-weight: 500;
+  color: #000;
+  font-size: 0.875rem;
+}
+
+.control-group label small {
+  color: #666;
+  font-size: 0.75rem;
+}
+
+/* Error State */
+.error {
+  color: #ff0000;
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 1px solid #ff0000;
+  border-radius: 4px;
+  background-color: #fff5f5;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 640px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .form-section {
+    padding: 1rem;
+  }
+
+  .input-group {
+    flex-direction: column;
+  }
+
+  .input-group button {
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+}
+
+.output {
+  margin-top: 2rem;
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  text-align: left;
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+.output pre {
+  margin: 0;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  font-family: monospace;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: #333;
+}
+
+.url-display {
+  margin-top: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  font-size: 0.75rem;
+  color: #666;
+  padding: 0.5rem;
+  background: #f5f5f5;
+  border-radius: 4px;
+}
+
+.url-text {
+  flex: 1;
+  word-break: break-all;
 }

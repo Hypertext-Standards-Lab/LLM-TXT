@@ -1,6 +1,6 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import path from 'path'
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import path from "path";
 
 export default defineConfig({
   plugins: [react()],
@@ -8,7 +8,15 @@ export default defineConfig({
     alias: {
       "@client": path.resolve(__dirname, "./src"),
       "@server": path.resolve(__dirname, "../server/src"),
-      "@shared": path.resolve(__dirname, "../shared/src")
-    }
-  }
-})
+      "@shared": path.resolve(__dirname, "../shared/src"),
+    },
+  },
+  server: {
+    proxy: {
+      "/mcp": {
+        target: "http://localhost:3000",
+        changeOrigin: true,
+      },
+    },
+  },
+});
