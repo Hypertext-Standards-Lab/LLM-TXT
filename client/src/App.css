@@ -47,12 +47,11 @@
 
 .code {
   text-align: start;
-  max-width: 500px;
   margin: auto;
 }
 
 .container {
-  max-width: 480px;
+  max-width: 600px;
   margin: 0 auto;
   padding: 1.5rem;
 }
@@ -210,6 +209,56 @@ p {
   margin-top: 1rem;
 }
 
+/* Results Section */
+.results {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: #d4edda;
+  border: 1px solid #c3e6cb;
+  border-radius: 4px;
+}
+
+.results p {
+  margin-bottom: 1rem;
+  color: #155724;
+  font-weight: 500;
+}
+
+.button-group {
+  display: flex;
+  gap: 1rem;
+}
+
+.button-group button {
+  flex: 1;
+  padding: 0.75rem 1.5rem;
+  border: 1px solid;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.button-group button.primary {
+  background: #000;
+  color: #fff;
+  border-color: #000;
+}
+
+.button-group button.primary:hover {
+  background: #fff;
+  color: #000;
+}
+
+.button-group button.secondary {
+  background: #fff;
+  color: #000;
+  border-color: #000;
+}
+
+.button-group button.secondary:hover {
+  background: #000;
+  color: #fff;
+}
+
 /* Responsive Adjustments */
 @media (max-width: 640px) {
   .container {
@@ -221,6 +270,14 @@ p {
   }
 
   .input-group button {
+    width: 100%;
+  }
+
+  .button-group {
+    flex-direction: column;
+  }
+
+  .button-group button {
     width: 100%;
   }
 }
@@ -304,6 +361,16 @@ p {
     background-color: #000;
   }
 
+  /* Results section */
+  .results {
+    background: #000;
+    border-color: #fff;
+  }
+
+  .results p {
+    color: #fff;
+  }
+
   /* Button states */
   button {
     background: #fff;
@@ -322,6 +389,28 @@ p {
     border-color: #fff;
     color: #fff;
     opacity: 0.5;
+  }
+
+  .button-group button.primary {
+    background: #fff;
+    color: #000;
+    border-color: #fff;
+  }
+
+  .button-group button.primary:hover {
+    background: #000;
+    color: #fff;
+  }
+
+  .button-group button.secondary {
+    background: #000;
+    color: #fff;
+    border-color: #fff;
+  }
+
+  .button-group button.secondary:hover {
+    background: #fff;
+    color: #000;
   }
 
   /* Read the docs link */

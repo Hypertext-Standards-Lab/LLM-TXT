@@ -27,6 +27,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [generatedUrl, setGeneratedUrl] = useState<string | null>(null);
+  const [fetchedData, setFetchedData] = useState<string | null>(null);
   const [params, setParams] = useState<FarcasterQueryParams>({
     limit: 10,
     includeReplies: false,
@@ -59,13 +60,13 @@ function App() {
         queryParams.set("username", cleanUsername);
       }
 
-      // Add optional parameters
+      // Add optional parameters (only send when needed to keep URLs clean)
       if (params.limit && !params.all) queryParams.set("limit", params.limit.toString());
-      queryParams.set("includeReplies", params.includeReplies ? "true" : "false");
       if (params.all) queryParams.set("all", "true");
-      if (params.sortOrder) queryParams.set("sortOrder", params.sortOrder);
-      if (params.includeReactions) queryParams.set("includeReactions", "true");
+      if (params.includeReplies) queryParams.set("includeReplies", "true");
       if (params.includeParents) queryParams.set("includeParents", "true");
+      if (params.sortOrder && params.sortOrder !== "newest") queryParams.set("sortOrder", params.sortOrder);
+      if (params.includeReactions) queryParams.set("includeReactions", "true");
 
       const url = `${SERVER_URL}?${queryParams.toString()}`;
       setGeneratedUrl(url);
@@ -80,6 +81,7 @@ function App() {
 
     setIsLoading(true);
     setError(null);
+    setFetchedData(null);
 
     try {
       // Normalize the URL to ensure username is lowercase
@@ -91,16 +93,62 @@ function App() {
         }
       }
 
-      // Open in new tab with the normalized URL
-      const newWindow = window.open(url.toString(), "_blank");
-      if (!newWindow) {
-        setError("Please allow popups for this site to generate the file");
+      // Fetch the data from the server with extended timeout
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 255000); // 4.25 minute timeout (matches server)
+
+      try {
+        const response = await fetch(url.toString(), {
+          signal: controller.signal,
+        });
+
+        clearTimeout(timeoutId);
+
+        if (!response.ok) {
+          throw new Error(`Server error: ${response.status} ${response.statusText}`);
+        }
+
+        const text = await response.text();
+        setFetchedData(text);
+      } catch (fetchErr) {
+        clearTimeout(timeoutId);
+        if (fetchErr instanceof Error && fetchErr.name === "AbortError") {
+          throw new Error("Request timed out after 4 minutes. Try reducing the number of posts or disable 'Fetch All'.");
+        }
+        throw fetchErr;
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleOpenInTab = () => {
+    if (!generatedUrl || !fetchedData) return;
+
+    const blob = new Blob([fetchedData], { type: "text/plain" });
+    const blobUrl = URL.createObjectURL(blob);
+    window.open(blobUrl, "_blank");
+  };
+
+  const handleDownload = () => {
+    if (!fetchedData) return;
+
+    const blob = new Blob([fetchedData], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+
+    // Generate filename from input
+    const isFid = !isNaN(Number(input));
+    const filename = isFid ? `fid-${input}.txt` : `${input.replace(/^@/, "")}.txt`;
+    a.download = filename;
+
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   };
 
   // Helper function to get loading message based on params
@@ -150,10 +198,23 @@ function App() {
               {getLoadingMessage() || "Generate"}
             </button>
           </div>
-          {generatedUrl && (
+          {generatedUrl && !fetchedData && (
             <p>
               <small>{generatedUrl}</small>
             </p>
+          )}
+          {fetchedData && (
+            <div className='results'>
+              <p>✅ Data fetched successfully! ({fetchedData.length.toLocaleString()} characters)</p>
+              <div className='button-group'>
+                <button type='button' onClick={handleOpenInTab} className='secondary'>
+                  📄 Open in New Tab
+                </button>
+                <button type='button' onClick={handleDownload} className='primary'>
+                  💾 Download as TXT
+                </button>
+              </div>
+            </div>
           )}
         </div>
 
@@ -261,8 +322,9 @@ function App() {
 
       <p>
         <small>
-          Built by <a href='https://warpcast.com/iammatthias'>@iammatthias</a>. Open source:{" "}
-          <a href='https://github.com/iammatthias/llm-fid-txt'>github.com/iammatthias/llm-fid-txt</a>
+          Powered by <a href='https://neynar.com/'>Neynar</a>. Built by{" "}
+          <a href='https://warpcast.com/iammatthias'>@iammatthias</a>. Open source on{" "}
+          <a href='https://github.com/iammatthias/llm-fid-txt'>GitHub</a>
         </small>
       </p>
     </div>

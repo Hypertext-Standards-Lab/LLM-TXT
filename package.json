@@ -32,9 +32,12 @@
   ],
   "devDependencies": {
     "bun-types": "latest",
-    "concurrently": "^9.1.2"
+    "concurrently": "^9.2.1"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@neynar/nodejs-sdk": "^3.34.0"
   }
 }
