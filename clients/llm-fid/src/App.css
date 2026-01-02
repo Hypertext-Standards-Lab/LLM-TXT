@@ -1,0 +1,9 @@
+/* LLM-FID Terminal Styles */
+@import "../../shared/styles/terminal.css";
+
+/* Farcaster accent: Purple */
+:root {
+  --t-accent: #8A63D2;
+  --t-accent-dim: #7350b8;
+  --t-accent-glow: rgba(138, 99, 210, 0.15);
+}

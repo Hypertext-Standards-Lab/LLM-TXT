@@ -1,0 +1,9 @@
+/* LLM-GIT Terminal Styles */
+@import "../../shared/styles/terminal.css";
+
+/* Git accent: Red */
+:root {
+  --t-accent: #F1502F;
+  --t-accent-dim: #d94026;
+  --t-accent-glow: rgba(241, 80, 47, 0.15);
+}

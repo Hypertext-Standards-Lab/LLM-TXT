@@ -1,0 +1,9 @@
+/* LLM-BSKY Terminal Styles */
+@import "../../shared/styles/terminal.css";
+
+/* Bluesky accent: Blue */
+:root {
+  --t-accent: #0085FF;
+  --t-accent-dim: #006dd6;
+  --t-accent-glow: rgba(0, 133, 255, 0.15);
+}

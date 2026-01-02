@@ -29,23 +29,10 @@ export interface FarcasterCast {
     type: string;
     url: string;
   }>;
-  embedsDeprecated?: Array<{
-    type: string;
-    url: string;
-  }>;
   reactions: {
     likes: number;
     recasts: number;
   };
-}
-
-export interface UserNameProof {
-  timestamp: number;
-  name: string;
-  owner: string;
-  signature: string;
-  fid: number;
-  type: string;
 }
 
 export interface FarcasterResponse {

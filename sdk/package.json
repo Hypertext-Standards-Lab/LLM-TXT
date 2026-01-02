@@ -1,0 +1,44 @@
+{
+  "name": "@llm-txt/sdk",
+  "version": "0.1.0",
+  "description": "SDK for the llm-txt paywalled API",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "bun test",
+    "test:watch": "bun test --watch"
+  },
+  "dependencies": {
+    "@x402/fetch": "^2.1.0",
+    "@x402/core": "^2.1.0",
+    "@x402/evm": "^2.1.0",
+    "viem": "^2.21.0",
+    "shared": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.2.2"
+  },
+  "peerDependencies": {
+    "viem": "^2.0.0"
+  },
+  "keywords": [
+    "llm-txt",
+    "farcaster",
+    "bluesky",
+    "rss",
+    "git",
+    "x402",
+    "payments",
+    "sdk"
+  ],
+  "license": "MIT"
+}

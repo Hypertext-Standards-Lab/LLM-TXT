@@ -1,0 +1,724 @@
+/* ==============================================
+   LLM-TXT TERMINAL DESIGN SYSTEM
+   US Graphics × Rams × YSL
+
+   A machine report aesthetic with
+   understated elegance and systematic precision
+   ============================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap");
+
+/* ==============================================
+   DESIGN TOKENS
+   ============================================== */
+
+:root {
+  /* Surfaces */
+  --t-bg: #0a0a0a;
+  --t-bg-elevated: #111111;
+  --t-bg-inset: #080808;
+
+  /* Typography - High contrast */
+  --t-fg: #f5f4f2;
+  --t-fg-muted: #d0ccc6;
+  --t-fg-dim: #9a958e;
+
+  /* Borders & Lines */
+  --t-border: #3a3632;
+  --t-border-strong: #524e48;
+
+  /* Accent - Customizable per-app (defaults to warm cream) */
+  --t-accent: #f5f0e8;
+  --t-accent-dim: #d4cfc7;
+  --t-accent-glow: rgba(245, 240, 232, 0.12);
+
+  /* Status Colors */
+  --t-success: #7ec47e;
+  --t-warning: #e0a860;
+  --t-error: #d46a6a;
+
+  /* Typography */
+  --t-font: "IBM Plex Mono", "SF Mono", "Monaco", monospace;
+  --t-font-size: 13px;
+  --t-line-height: 1.65;
+
+  /* Grid */
+  --t-label-width: 100px;
+  --t-gap: 1px;
+  --t-padding: 16px;
+  --t-padding-sm: 12px;
+
+  /* Timing */
+  --t-duration: 180ms;
+  --t-ease: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ==============================================
+   RESET & BASE
+   ============================================== */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: var(--t-font-size);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background: var(--t-bg);
+  color: var(--t-fg);
+  font-family: var(--t-font);
+  line-height: var(--t-line-height);
+  min-height: 100vh;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 24px 16px;
+}
+
+::selection {
+  background: var(--t-accent);
+  color: var(--t-bg);
+}
+
+:focus-visible {
+  outline: 1px solid var(--t-fg-dim);
+  outline-offset: 2px;
+}
+
+/* ==============================================
+   TERMINAL CONTAINER
+   ============================================== */
+
+.terminal {
+  width: 100%;
+  max-width: 560px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--t-gap);
+  background: var(--t-border);
+  border: 1px solid var(--t-border);
+}
+
+/* ==============================================
+   GENERATIVE HEADER PATTERN
+   Vertical lines, random spacing, edge-to-edge
+   ============================================== */
+
+.terminal-pattern {
+  background: var(--t-bg);
+  padding: 0;
+  display: block;
+  overflow: hidden;
+}
+
+.terminal-pattern svg {
+  display: block;
+  width: 100%;
+  height: 24px;
+}
+
+.terminal-pattern line {
+  stroke: var(--t-border-strong);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+/* ==============================================
+   HEADER
+   ============================================== */
+
+.terminal-header {
+  background: var(--t-bg);
+  padding: 20px var(--t-padding);
+  text-align: center;
+  border-bottom: 1px solid var(--t-border);
+}
+
+.terminal-title {
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  color: var(--t-fg);
+  text-transform: uppercase;
+}
+
+.terminal-subtitle {
+  font-size: 0.7rem;
+  font-weight: 400;
+  color: var(--t-fg-dim);
+  letter-spacing: 0.15em;
+  margin-top: 6px;
+  text-transform: uppercase;
+}
+
+/* ==============================================
+   SECTIONS
+   ============================================== */
+
+.terminal-section {
+  background: var(--t-bg);
+  padding: var(--t-padding);
+}
+
+.terminal-section-header {
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--t-fg-muted);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid var(--t-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* ==============================================
+   GRID ROWS
+   Two-column label/value system
+   ============================================== */
+
+.terminal-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 6px 0;
+  min-height: 28px;
+}
+
+.terminal-row + .terminal-row {
+  border-top: none;
+}
+
+.terminal-label {
+  width: var(--t-label-width);
+  flex-shrink: 0;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--t-fg-dim);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding-top: 2px;
+}
+
+.terminal-value {
+  flex: 1;
+  font-size: 0.85rem;
+  color: var(--t-fg);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.terminal-value--mono {
+  font-variant-numeric: tabular-nums;
+}
+
+.terminal-value--success {
+  color: var(--t-success);
+}
+
+.terminal-value--warning {
+  color: var(--t-warning);
+}
+
+.terminal-value--error {
+  color: var(--t-error);
+}
+
+.terminal-value--processing {
+  animation: pulse 1.8s ease-in-out infinite;
+}
+
+/* ==============================================
+   DITHERED PROGRESS BARS
+   US Graphics signature element
+   ============================================== */
+
+.terminal-progress {
+  flex: 1;
+  height: 14px;
+  background: var(--t-bg-inset);
+  border: 1px solid var(--t-border);
+  position: relative;
+  overflow: hidden;
+}
+
+.terminal-progress-fill {
+  height: 100%;
+  position: relative;
+  transition: width var(--t-duration) var(--t-ease);
+}
+
+/* Dithered pattern using CSS */
+.terminal-progress-fill::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: var(--t-fg);
+}
+
+.terminal-progress-fill::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg width='4' height='4' viewBox='0 0 4 4' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='0' y='0' width='2' height='2' fill='%23080808'/%3E%3Crect x='2' y='2' width='2' height='2' fill='%23080808'/%3E%3C/svg%3E");
+  background-size: 4px 4px;
+  opacity: 0.4;
+}
+
+/* Animated loading state */
+.terminal-progress--loading .terminal-progress-fill::before {
+  animation: progress-scan 1.5s ease-in-out infinite;
+  background: linear-gradient(
+    90deg,
+    var(--t-fg) 0%,
+    var(--t-accent) 50%,
+    var(--t-fg) 100%
+  );
+  background-size: 200% 100%;
+}
+
+@keyframes progress-scan {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Indeterminate progress */
+.terminal-progress--indeterminate .terminal-progress-fill {
+  width: 30% !important;
+  animation: progress-indeterminate 1.2s ease-in-out infinite;
+}
+
+@keyframes progress-indeterminate {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(400%); }
+}
+
+/* ==============================================
+   FORM ELEMENTS
+   ============================================== */
+
+.terminal-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.terminal-input {
+  flex: 1;
+  min-width: 0;
+  background: var(--t-bg-inset);
+  border: 1px solid var(--t-border);
+  color: var(--t-fg);
+  font-family: var(--t-font);
+  font-size: 0.85rem;
+  padding: 7px 10px;
+  transition: border-color var(--t-duration) var(--t-ease),
+              background var(--t-duration) var(--t-ease);
+}
+
+.terminal-input:hover:not(:disabled) {
+  border-color: var(--t-border-strong);
+}
+
+.terminal-input:focus {
+  outline: none;
+  border-color: var(--t-fg-dim);
+  background: var(--t-bg);
+}
+
+.terminal-input:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.terminal-input::placeholder {
+  color: var(--t-fg-dim);
+}
+
+.terminal-input--sm {
+  max-width: 100px;
+}
+
+/* Select styling */
+select.terminal-input {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%235c5854' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  padding-right: 30px;
+  cursor: pointer;
+}
+
+/* ==============================================
+   CHECKBOXES
+   ============================================== */
+
+.terminal-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.terminal-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  color: var(--t-fg);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  transition: opacity var(--t-duration) var(--t-ease);
+}
+
+.terminal-option:hover:not(.terminal-option--disabled) {
+  color: var(--t-accent);
+}
+
+.terminal-option--disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.terminal-option input[type="checkbox"] {
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  border: 1px solid var(--t-fg-dim);
+  background: var(--t-bg-inset);
+  cursor: pointer;
+  position: relative;
+  transition: all var(--t-duration) var(--t-ease);
+}
+
+.terminal-option input[type="checkbox"]:checked {
+  background: var(--t-accent);
+  border-color: var(--t-accent);
+}
+
+.terminal-option input[type="checkbox"]:checked::after {
+  content: "";
+  position: absolute;
+  top: 1px;
+  left: 3px;
+  width: 4px;
+  height: 6px;
+  border: solid var(--t-bg);
+  border-width: 0 1.5px 1.5px 0;
+  transform: rotate(45deg);
+}
+
+.terminal-option input[type="checkbox"]:disabled {
+  cursor: not-allowed;
+}
+
+/* ==============================================
+   BUTTONS
+   ============================================== */
+
+.terminal-btn {
+  background: var(--t-accent);
+  color: var(--t-bg);
+  border: none;
+  padding: 8px 20px;
+  font-family: var(--t-font);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all var(--t-duration) var(--t-ease);
+}
+
+.terminal-btn:hover:not(:disabled) {
+  background: var(--t-accent-dim);
+}
+
+.terminal-btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.terminal-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.terminal-btn--sm {
+  padding: 6px 14px;
+  font-size: 0.75rem;
+}
+
+.terminal-btn--ghost {
+  background: transparent;
+  color: var(--t-fg-muted);
+  padding: 4px 0;
+  font-weight: 400;
+}
+
+.terminal-btn--ghost:hover:not(:disabled) {
+  background: transparent;
+  color: var(--t-accent);
+}
+
+/* ==============================================
+   OUTPUT SECTION
+   ============================================== */
+
+.terminal-output {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 280px;
+}
+
+.terminal-output-actions {
+  display: flex;
+  gap: 16px;
+}
+
+.terminal-output-window {
+  flex: 1;
+  background: var(--t-bg-inset);
+  border-top: 1px solid var(--t-border);
+  margin-top: 10px;
+}
+
+.terminal-output-content {
+  height: 100%;
+  min-height: 180px;
+  max-height: 380px;
+  overflow-y: auto;
+  padding: 12px 0;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  font-size: 0.8rem;
+  line-height: 1.7;
+  color: var(--t-fg);
+}
+
+/* Scrollbar */
+.terminal-output-content::-webkit-scrollbar {
+  width: 4px;
+}
+
+.terminal-output-content::-webkit-scrollbar-track {
+  background: var(--t-bg-inset);
+}
+
+.terminal-output-content::-webkit-scrollbar-thumb {
+  background: var(--t-border-strong);
+}
+
+.terminal-output-content::-webkit-scrollbar-thumb:hover {
+  background: var(--t-fg-dim);
+}
+
+/* Output states */
+.terminal-output-idle {
+  color: var(--t-fg-dim);
+}
+
+.terminal-output-loading {
+  color: var(--t-fg-muted);
+}
+
+.terminal-output-error {
+  color: var(--t-error);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.terminal-output-success {
+  color: var(--t-success);
+  margin-bottom: 8px;
+}
+
+.terminal-output-hint {
+  color: var(--t-fg-dim);
+  font-size: 0.75rem;
+}
+
+.terminal-output-footer {
+  color: var(--t-fg-dim);
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--t-border);
+}
+
+/* ==============================================
+   FOOTER
+   ============================================== */
+
+.terminal-footer {
+  background: var(--t-bg);
+  padding: 14px var(--t-padding);
+  text-align: center;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.terminal-footer a {
+  color: var(--t-fg-dim);
+  text-decoration: none;
+  transition: color var(--t-duration) var(--t-ease);
+}
+
+.terminal-footer a:hover {
+  color: var(--t-fg);
+}
+
+.terminal-footer-sep {
+  color: var(--t-border);
+  margin: 0 8px;
+}
+
+/* ==============================================
+   LOADING INDICATOR
+   Dithered animated bar
+   ============================================== */
+
+.terminal-loading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--t-fg-muted);
+}
+
+.terminal-loading-bar {
+  width: 100px;
+  height: 8px;
+  background: var(--t-bg-inset);
+  border: 1px solid var(--t-border);
+  position: relative;
+  overflow: hidden;
+}
+
+.terminal-loading-bar::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -30%;
+  width: 30%;
+  height: 100%;
+  background: var(--t-fg);
+  animation: loading-slide 1s ease-in-out infinite;
+}
+
+.terminal-loading-bar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg width='4' height='4' viewBox='0 0 4 4' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='0' y='0' width='2' height='2' fill='%23080808'/%3E%3Crect x='2' y='2' width='2' height='2' fill='%23080808'/%3E%3C/svg%3E");
+  background-size: 4px 4px;
+  opacity: 0.5;
+}
+
+@keyframes loading-slide {
+  0% { left: -30%; }
+  100% { left: 100%; }
+}
+
+/* ==============================================
+   ANIMATIONS
+   ============================================== */
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ==============================================
+   RESPONSIVE
+   ============================================== */
+
+@media (max-width: 480px) {
+  :root {
+    --t-label-width: 72px;
+    --t-padding: 12px;
+    --t-font-size: 12px;
+  }
+
+  #root {
+    padding: 12px 8px;
+  }
+
+  .terminal-barcode::before {
+    height: 20px;
+  }
+
+  .terminal-header {
+    padding: 16px var(--t-padding);
+  }
+
+  .terminal-title {
+    font-size: 1rem;
+    letter-spacing: 0.15em;
+  }
+
+  .terminal-row {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .terminal-label {
+    width: 100%;
+  }
+
+  .terminal-value {
+    width: 100%;
+  }
+
+  .terminal-input {
+    width: 100%;
+  }
+
+  .terminal-input--sm {
+    max-width: none;
+  }
+
+  .terminal-options {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .terminal-output-actions {
+    gap: 8px;
+  }
+
+  .terminal-footer-sep {
+    margin: 0 4px;
+  }
+}
+
+/* ==============================================
+   UTILITY CLASSES
+   ============================================== */
+
+.t-hidden { display: none !important; }
+.t-visible { visibility: visible !important; }
+.t-invisible { visibility: hidden !important; }
+.t-flex { display: flex !important; }
+.t-flex-1 { flex: 1 !important; }
+.t-gap-sm { gap: 8px !important; }
+.t-gap-md { gap: 12px !important; }
+.t-mt-sm { margin-top: 8px !important; }
+.t-mt-md { margin-top: 12px !important; }

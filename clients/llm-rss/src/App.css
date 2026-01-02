@@ -1,0 +1,9 @@
+/* LLM-RSS Terminal Styles */
+@import "../../shared/styles/terminal.css";
+
+/* RSS accent: Orange */
+:root {
+  --t-accent: #f26522;
+  --t-accent-dim: #d9541a;
+  --t-accent-glow: rgba(242, 101, 34, 0.15);
+}

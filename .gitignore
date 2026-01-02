@@ -41,3 +41,7 @@ pnpm-debug.log*
 
 # Bun
 bun.lockb
+.dev.vars
+
+# test app
+test-app/

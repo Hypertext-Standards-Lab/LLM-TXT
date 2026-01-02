@@ -1,29 +1,51 @@
 {
-  "name": "llm-fid-txt",
+  "name": "llm-txt",
   "version": "0.3.0",
-  "description": "Generate a llm.txt file for a Farcaster profile",
+  "description": "Generate a llm.txt file for various platforms",
   "author": "iammatthias",
   "license": "MIT",
-  "homepage": "https://github.com/iammatthias/llm-fid-txt",
+  "homepage": "https://github.com/iammatthias/llm-txt",
+  "overrides": {
+    "hono": "^4.7.7"
+  },
   "workspaces": [
     "./server",
-    "./client",
-    "./shared"
+    "./shared",
+    "./sdk",
+    "./clients/*"
   ],
   "scripts": {
-    "dev:client": "cd client && bun run dev",
+    "dev:fid": "cd clients/llm-fid && bun run dev",
+    "dev:bsky": "cd clients/llm-bsky && bun run dev",
+    "dev:rss": "cd clients/llm-rss && bun run dev",
+    "dev:git": "cd clients/llm-git && bun run dev",
     "dev:server": "cd server && bun run dev",
     "dev:shared": "cd shared && bun run dev",
-    "dev": "concurrently \"bun run dev:shared\" \"bun run dev:server\" \"bun run dev:client\"",
-    "build:client": "cd client && bun run build",
+    "dev:sdk": "cd sdk && bun run dev",
+    "dev:test-app": "cd clients/test-app && bun run dev",
+    "dev": "concurrently \"bun run dev:shared\" \"bun run dev:sdk\" \"bun run dev:server\" \"bun run dev:fid\"",
+    "build:fid": "cd clients/llm-fid && bun run build",
+    "build:bsky": "cd clients/llm-bsky && bun run build",
+    "build:rss": "cd clients/llm-rss && bun run build",
+    "build:git": "cd clients/llm-git && bun run build",
     "build:shared": "cd shared && bun run build",
-    "build": "bun run build:shared && bun run build:client",
-    "postinstall": "bun run build:shared",
-    "deploy:client": "cd client && bun run deploy",
+    "build:sdk": "cd sdk && bun run build",
+    "build:test-app": "cd clients/test-app && bun run build",
+    "build": "bun run build:shared && bun run build:sdk && bun run build:fid && bun run build:bsky && bun run build:rss && bun run build:git",
+    "postinstall": "bun run build:shared && bun run build:sdk",
+    "deploy:fid": "cd clients/llm-fid && bun run deploy",
+    "deploy:bsky": "cd clients/llm-bsky && bun run deploy",
+    "deploy:rss": "cd clients/llm-rss && bun run deploy",
+    "deploy:git": "cd clients/llm-git && bun run deploy",
     "deploy:server": "cd server && bun run deploy",
-    "deploy": "bun run deploy:client && bun run deploy:server"
+    "deploy": "bun run deploy:fid && bun run deploy:bsky && bun run deploy:rss && bun run deploy:git && bun run deploy:server",
+    "test": "cd sdk && bun run test",
+    "test:unit": "cd sdk && bun run test:unit",
+    "test:integration": "cd sdk && bun run test:integration",
+    "test:payment": "cd sdk && bun run test:payment"
   },
   "keywords": [
+    "llm-txt",
     "bun",
     "hono",
     "react",
@@ -35,9 +57,9 @@
     "concurrently": "^9.2.1"
   },
   "peerDependencies": {
-    "typescript": "^5.0.0"
+    "typescript": "^5.7.3"
   },
   "dependencies": {
-    "@neynar/nodejs-sdk": "^3.34.0"
+    "@neynar/nodejs-sdk": "^3.117.0"
   }
 }
