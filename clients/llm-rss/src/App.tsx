@@ -13,6 +13,7 @@ import {
   PricingTable,
   useTerminalState,
   usePricing,
+  footerLinks,
   type TerminalLayoutConfig,
 } from "../../shared";
 import "./App.css";
@@ -24,11 +25,7 @@ const config: TerminalLayoutConfig = {
   subtitle: "RSS/Atom Feed Export Utility",
   idleText: "Enter RSS/Atom feed URL...",
   loadingText: "Fetching feed...",
-  footerLinks: [
-    { label: "llm-txt.fun", href: "https://llm-txt.fun" },
-    { label: "RSS SPEC", href: "https://www.rssboard.org/rss-specification" },
-    { label: "X402", href: "https://x402.org/" },
-  ],
+  footerLinks,
 };
 
 function App() {

@@ -13,6 +13,7 @@ import {
   PricingTable,
   useTerminalState,
   usePricing,
+  footerLinks,
   type TerminalLayoutConfig,
 } from "../../shared";
 import "./App.css";
@@ -24,11 +25,7 @@ const config: TerminalLayoutConfig = {
   subtitle: "Bluesky Profile Export Utility",
   idleText: "Enter handle or DID...",
   loadingText: "Fetching posts...",
-  footerLinks: [
-    { label: "llm-txt.fun", href: "https://llm-txt.fun" },
-    { label: "BLUESKY", href: "https://bsky.app/" },
-    { label: "X402", href: "https://x402.org/" },
-  ],
+  footerLinks,
 };
 
 function App() {

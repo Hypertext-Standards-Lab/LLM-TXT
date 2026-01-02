@@ -7,7 +7,7 @@
   "homepage": "https://llm-txt.fun",
   "repository": {
     "type": "git",
-    "url": "https://github.com/iammatthias/llm-txt"
+    "url": "https://github.com/Hypertext-Standards-Lab/LLM-TXT"
   },
   "overrides": {
     "hono": "^4.7.7"

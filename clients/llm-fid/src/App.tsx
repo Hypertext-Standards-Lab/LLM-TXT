@@ -13,6 +13,7 @@ import {
   PricingTable,
   useTerminalState,
   usePricing,
+  footerLinks,
   type TerminalLayoutConfig,
 } from "../../shared";
 import "./App.css";
@@ -24,11 +25,7 @@ const config: TerminalLayoutConfig = {
   subtitle: "Farcaster Profile Export Utility",
   idleText: "Enter FID or username...",
   loadingText: "Fetching casts...",
-  footerLinks: [
-    { label: "llm-txt.fun", href: "https://llm-txt.fun" },
-    { label: "FARCASTER", href: "https://warpcast.com/" },
-    { label: "X402", href: "https://x402.org/" },
-  ],
+  footerLinks,
 };
 
 function App() {

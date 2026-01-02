@@ -13,6 +13,7 @@ import {
   PricingTable,
   useTerminalState,
   usePricing,
+  footerLinks,
   type TerminalLayoutConfig,
 } from "../../shared";
 import "./App.css";
@@ -24,11 +25,7 @@ const config: TerminalLayoutConfig = {
   subtitle: "Git Repository Export Utility",
   idleText: "Enter Git repository URL...",
   loadingText: "Cloning repository...",
-  footerLinks: [
-    { label: "llm-txt.fun", href: "https://llm-txt.fun" },
-    { label: "GITHUB", href: "https://github.com" },
-    { label: "X402", href: "https://x402.org/" },
-  ],
+  footerLinks,
 };
 
 function App() {

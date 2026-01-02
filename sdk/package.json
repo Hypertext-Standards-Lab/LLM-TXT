@@ -1,13 +1,13 @@
 {
   "name": "@llm-txt/sdk",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "TypeScript SDK for the LLM-TXT API with built-in x402 payment handling",
   "author": "iammatthias",
   "license": "MIT",
   "homepage": "https://llm-txt.fun",
   "repository": {
     "type": "git",
-    "url": "https://github.com/iammatthias/llm-txt",
+    "url": "https://github.com/Hypertext-Standards-Lab/LLM-TXT",
     "directory": "sdk"
   },
   "type": "module",

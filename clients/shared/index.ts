@@ -4,3 +4,4 @@ export * from "./components/TerminalLayout";
 export * from "./components/PricingTable";
 export * from "./hooks/useTerminalState";
 export * from "./hooks/usePricing";
+export * from "./config/footer";

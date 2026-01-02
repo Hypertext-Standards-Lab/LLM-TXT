@@ -4,6 +4,7 @@ import {
   TerminalHeader,
   TerminalSection,
   TerminalFooter,
+  footerLinks,
 } from "../../shared";
 import "./App.css";
 
@@ -36,11 +37,6 @@ const platforms = [
   },
 ];
 
-const footerLinks = [
-  { label: "GitHub", href: "https://github.com/iammatthias/llm-txt" },
-  { label: "x402", href: "https://x402.org" },
-  { label: "npm", href: "https://npmjs.com/package/@llm-txt/sdk" },
-];
 
 function App() {
   return (
