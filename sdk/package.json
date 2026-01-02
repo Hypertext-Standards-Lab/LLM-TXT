@@ -1,6 +1,6 @@
 {
   "name": "@llm-txt/sdk",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "TypeScript SDK for the LLM-TXT API with built-in x402 payment handling",
   "author": "iammatthias",
   "license": "MIT",

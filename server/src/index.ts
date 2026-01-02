@@ -747,7 +747,7 @@ app.use("/*", async (c, next) => {
     origin: allowedOrigins.includes(origin) ? origin : allowedOrigins[0] || "",
     allowMethods: ["GET", "OPTIONS"],
     allowHeaders: ["Content-Type", "Accept", "X-PAYMENT"],
-    exposeHeaders: ["X-PAYMENT-RESPONSE"],
+    exposeHeaders: ["X-PAYMENT-RESPONSE", "payment-required"],
     maxAge: 86400,
   });
 
@@ -819,7 +819,7 @@ function getX402Server(config: FacilitatorConfig): x402ResourceServer {
 }
 
 // x402 payment middleware using @x402/hono v2 API
-app.use("/", async (c, next) => {
+app.use("/fid", async (c, next) => {
   const query = c.req.query();
 
   // Skip: no query params (redirect to frontend)
@@ -901,7 +901,7 @@ app.use("/", async (c, next) => {
   // Use @x402/hono v2 API
   const middleware = paymentMiddleware(
     {
-      "GET /": {
+      "GET /fid": {
         accepts: [
           {
             scheme: "exact",
@@ -1011,7 +1011,7 @@ app.get("/pricing", async (c) => {
 
 // Price estimate endpoint - returns authoritative price from server
 // This endpoint is free (no payment required)
-app.get("/estimate", async (c) => {
+app.get("/fid/estimate", async (c) => {
   try {
     const fid = c.req.query("fid");
     const username = c.req.query("username");
@@ -1105,7 +1105,7 @@ app.get("/estimate", async (c) => {
 
 // User info endpoint - returns cast count for accurate "all" pricing
 // This endpoint is free (no payment required)
-app.get("/user-info", async (c) => {
+app.get("/fid/user-info", async (c) => {
   try {
     const fid = c.req.query("fid");
     const username = c.req.query("username");
@@ -1170,7 +1170,7 @@ app.get("/user-info", async (c) => {
   }
 });
 
-app.get("/", async (c) => {
+app.get("/fid", async (c) => {
   try {
     const q = c.req.query() as FarcasterQueryParams;
 

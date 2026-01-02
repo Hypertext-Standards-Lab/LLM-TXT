@@ -166,7 +166,7 @@ export class LlmFidClient {
     }
 
     const queryString = buildQueryString(options);
-    const url = `${this.baseUrl}?${queryString}`;
+    const url = `${this.baseUrl}/fid?${queryString}`;
 
     // Create abort controller for timeout
     const controller = new AbortController();
@@ -205,7 +205,7 @@ export class LlmFidClient {
    */
   getUrl(options: FetchOptions): string {
     const queryString = buildQueryString(options);
-    return `${this.baseUrl}?${queryString}`;
+    return `${this.baseUrl}/fid?${queryString}`;
   }
 
   /**
@@ -231,7 +231,7 @@ export class LlmFidClient {
     try {
       const queryString = buildQueryString(options);
       // Use baseFetchFn - estimate endpoint doesn't need payment handling
-      const response = await this.baseFetchFn(`${this.baseUrl}/estimate?${queryString}`, {
+      const response = await this.baseFetchFn(`${this.baseUrl}/fid/estimate?${queryString}`, {
         headers: { Accept: "application/json" },
       });
 

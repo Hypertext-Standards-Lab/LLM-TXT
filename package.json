@@ -45,7 +45,7 @@
     "deploy:git": "cd clients/llm-git && bun run deploy",
     "deploy:txt": "cd clients/llm-txt && bun run deploy",
     "deploy:server": "cd server && bun run deploy",
-    "deploy": "bun run deploy:fid && bun run deploy:bsky && bun run deploy:rss && bun run deploy:git && bun run deploy:txt && bun run deploy:server",
+    "deploy": "bun run deploy:server &&bun run deploy:fid && bun run deploy:bsky && bun run deploy:rss && bun run deploy:git && bun run deploy:txt",
     "test": "cd sdk && bun run test",
     "test:unit": "cd sdk && bun run test:unit",
     "test:integration": "cd sdk && bun run test:integration",
