@@ -209,7 +209,7 @@ function App() {
               type='text'
               value={terminal.input}
               onChange={(e) => terminal.setInput(e.target.value)}
-              placeholder='3 or iammatthias'
+              placeholder='3 or dwr.eth'
               disabled={terminal.isLoading}
             />
           </TerminalRow>
