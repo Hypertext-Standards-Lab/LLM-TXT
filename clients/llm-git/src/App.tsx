@@ -14,11 +14,12 @@ import {
   useTerminalState,
   usePricing,
   footerLinks,
+  env,
   type TerminalLayoutConfig,
 } from "../../shared";
 import "./App.css";
 
-const SERVER_URL = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? "https://api.llm-txt.fun" : "/api");
+const SERVER_URL = import.meta.env.DEV ? "/api" : env.API_URL;
 
 const config: TerminalLayoutConfig = {
   title: "LLM-GIT.TXT",

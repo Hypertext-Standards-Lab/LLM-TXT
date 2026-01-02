@@ -24,11 +24,7 @@ import {
   OutputSuccess,
   OutputFooter,
 } from "./Terminal";
-
-export interface FooterLink {
-  label: string;
-  href: string;
-}
+import type { FooterLink } from "../config/footer";
 
 export interface TerminalLayoutConfig {
   title: string;

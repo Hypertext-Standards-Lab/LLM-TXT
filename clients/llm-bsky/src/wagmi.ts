@@ -1,9 +1,9 @@
 import { http, createConfig } from "wagmi";
 import { baseSepolia, base } from "wagmi/chains";
 import { injected, walletConnect } from "wagmi/connectors";
+import { env } from "../../shared";
 
-// WalletConnect project ID - get one at https://cloud.walletconnect.com
-const projectId = import.meta.env.VITE_WALLETCONNECT_PROJECT_ID || "";
+const projectId = env.WALLETCONNECT_PROJECT_ID;
 
 export const config = createConfig({
   chains: [baseSepolia, base],
